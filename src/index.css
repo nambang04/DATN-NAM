@@ -1,0 +1,318 @@
+
+  /* css main page */
+  @media (max-width: 1000px) {
+    .row-cols-md-3 {
+      flex-direction: column;
+    }
+  
+    .col {
+      width: 550px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .row-cols-md-3 {
+      flex-direction: column;
+    }
+  
+    .col {
+      width: 400px;
+    }
+  }
+  
+  /* main */
+  .header-main {
+    background-color: #6D929B;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: #F5FAFA;
+  }
+  
+  /* .text-header {} */
+  
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    color: black;
+    min-width: 100px;
+    z-index: 1;
+    border: 1px solid black;
+  }
+  
+  .dropdown-content:hover {
+    background-color: #C1DAD6;
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .date-time {
+    text-align: center;
+  }
+  
+  /* sos */
+  
+  .sos-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .toggle-switch {
+    margin: 20px 0px 0px 0px;
+    width: 300px;
+    height: 60px;
+    background-color: #ccc;
+    border-radius: 60px;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  /* Thiết lập kiểu cho nút trượt */
+  .toggle-slider {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    transition: transform 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: rgb(251, 242, 229);
+    text-align: center;
+    border: 2px solid red;
+  }
+  
+  .toggle-slider p {
+    font-weight: bolder;
+    color: red;
+  }
+  
+  .text-sos-on {
+    display: none;
+  }
+  
+  .text-sos-off {
+    display: block;
+  }
+  
+  .text-sos-on,
+  .text-sos-off {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    font-size: large;
+  }
+  
+  /* Thiết lập kiểu cho nút khi được bật */
+  .toggle-switch.active {
+    background-color: red;
+  }
+  
+  .toggle-switch.active .text-sos-off {
+    display: none;
+  }
+  
+  .toggle-switch.active .text-sos-on {
+    display: block;
+    color: white;
+  }
+  
+  .toggle-switch.active .toggle-slider {
+    transform: translateX(240px);
+  }
+  
+  #ex2-tab-2.nav-link.active+.sos-btn {
+    display: none;
+  }
+  
+  /* chart */
+  .chart {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    position: relative;
+    border: 2px solid #787373;
+    padding: 40px;
+    margin: 20px 40px;
+  }
+  
+  .text-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(18px,-25px);
+    /* Điều chỉnh khoảng cách từ biên container */
+    background-color: white;
+    /* Màu nền của đoạn văn bản */
+    padding: 4px;
+    /* Khoảng cách giữa văn bản và đường biên */
+    font-size: 30px;
+    /* Kích thước font của đoạn văn bản */
+    z-index: 1;
+    font-weight: 700;
+  }
+  
+  .chart-item {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  
+  .chart-center-text {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 30px;
+    color: #777575;
+    /* Màu của đoạn văn bản */
+    font-weight: bold;
+  }
+  
+  
+  /* Mouse-over effects */
+  .speed-input:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  /* .speed-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: black;
+    cursor: pointer;
+  } */
+  
+  /* .speed-input::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: black;
+    cursor: pointer;
+  } */
+  
+  /* speed */
+  /* styles.css (hoặc một tệp CSS tương tự) */
+  /* styles.css (hoặc một tệp CSS tương tự) */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+  
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Sử dụng biến speed để làm cho tốc độ xoay linh hoạt */
+  /* .rotating-fan {
+    animation: spin 1s linear infinite;
+
+  }
+   */
+  /* 5s là thời gian hoàn thành một chu kỳ xoay (có thể điều chỉnh) */ 
+  .header-right {
+    display: flex;
+  }
+  
+  .status-on {
+    background-color: green;
+    padding: 10px;
+    border-radius: 50px;
+    margin-right: 20px;
+    font-weight: 500;
+  }
+  
+  .status-off {
+    background-color: red;
+    padding: 10px;
+    border-radius: 50px;
+    margin-right: 20px;
+    font-weight: 500;
+  }
+  
+  .grayed-out {
+    /* Áp dụng kiểu mờ và màu xám để phủ xám nội dung */
+    opacity: 0.2;
+    background-color: #d5d5d5;
+    pointer-events: none;
+    /* Vô hiệu hóa tương tác người dùng */
+  }
+  
+  .img-status {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+
+  .img-status2 {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+  
+  .col-sm-1 {
+    text-align: right;
+  }
+  
+  .textStatus {
+    text-align: center;
+    font-size: larger;
+  }
+
+  .textStatus2 {
+    text-align: center;
+    font-size: larger;
+  }
+  
+  /* .textStatusWeb {
+    text-align: center;
+    font-size: x-large;
+    margin-bottom: 20px;
+    font-weight: bolder;
+  } */
+  
+  /* ----------------- */
+  @media only screen and (max-width: 800px) {
+    .img-status {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    .img-status2 {
+      display: none;
+    }
+  }
+  
+  @media only screen and (min-width: 800px) {
+    .textStatus {
+      display: none;
+    }
+  }
+
+  @media only screen and (min-width: 800px) {
+    .textStatus2 {
+      display: none;
+    }
+  }
