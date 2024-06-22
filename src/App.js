@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 
 
-import { getDatabase, ref, get, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 
 import imgOffline from './image/OFFLINE.png'
 import imgOnline from './image/ONLINE.png'
@@ -53,9 +53,9 @@ function App() {
 
   // hop 2 
 
-  const [humiData2, sethumiData2] = useState(0);
-  const [smokeData2, setsmokeData2] = useState(0);
-  const [tempData2, settempData2] = useState(0);
+  const [humiData2, sethumiData2] = useState(null);
+  const [smokeData2, setsmokeData2] = useState(null);
+  const [tempData2, settempData2] = useState(null);
 
 
   const [status2, setstatus2] = useState(null);
@@ -63,7 +63,7 @@ function App() {
   const [newtimestamp2, setnewtimestamp2] = useState(null);
 
 
-  const { isLoggedIn, logout } = useAuth();
+  const { logout } = useAuth();
   
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -119,17 +119,6 @@ function App() {
 
 
 
-  useEffect(() => {
-    getValueData();
-    getStatusData();
-  }, []);
-  
-  useEffect(() => {
-    getValueData2();
-    getStatusData2();
-  }, []);
-
-
 const getValueData = async () => {
   try {
     const response = await axios.get(
@@ -147,33 +136,39 @@ const getValueData = async () => {
   }
 };
 
-const getValueData2 = async () => {
+const getInitialDataFromFirebase = async () => {
   try {
     const response = await axios.get(
       "https://test2-d9c33-default-rtdb.firebaseio.com/Room2/read.json"
     );
     const result = response?.data;
 
-    sethumiData2(result?.humi2);
-    setsmokeData2(result?.smoke2);
-    settempData2(result?.temp2);
+    sethumiData2(result?.humi);
+    setsmokeData2(result?.smoke);
+    settempData2(result?.temp);
 
-    console.log("data", result);
+    console.log("Initial data from Firebase", result);
   } catch (error) {
     console.log("Error:", error);
   }
 };
 
-useEffect(() => {
-  const fetchData = async () => {
-    setIsLoading(true);
-    await getValueData();
-    await getValueData2();
-    setIsLoading(false);
-  };
 
-  fetchData();
+useEffect(() => {
+  getInitialDataFromFirebase();
 }, []);
+
+
+useEffect(() => {
+  getValueData();
+  getStatusData();
+}, []);
+
+useEffect(() => {
+  //getValueData2();
+  getStatusData2();
+}, []);
+
 
 
   const toggleSos = () => {
@@ -183,7 +178,7 @@ useEffect(() => {
   };
 
 
-  // Sử dụng hàm sendControlToFirebase để gửi giá trị tốc độ mới lên Firebase mỗi khi nó thay đổi
+
   useEffect(() => {
     // Tạo một hàm async để gửi dữ liệu lên Firebase
     const sendControlToFirebase = async () => {
@@ -197,7 +192,7 @@ useEffect(() => {
       try {
         // Gửi dữ liệu lên Firebase bằng set
         await set(rwRef, data);
-        console.log("Đã cập nhật giá trị tốc độ và sosData lên Firebase.");
+        console.log("Đã cập nhật giá trị sosData lên Firebase.");
       } catch (error) {
         console.error("Lỗi khi cập nhật giá trị lên Firebase:", error);
       }
@@ -228,8 +223,9 @@ useEffect(() => {
 
   listenToFirebaseData("rw/sos", setsosData);
 }, []);
+console.log('humi:', humiData);
 
-
+console.log('humi2:', humiData2);
 // Gửi mail 
 
 
@@ -519,6 +515,7 @@ useEffect(() => {
       <HumidityChart humidity={humiData2} />
       <SmokeChart smoke={smokeData2} />
       <TemperatureChart temperature={tempData2} />
+
     </div>
   )}
 </div>
