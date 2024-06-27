@@ -316,3 +316,13 @@
       display: none;
     }
   }
+  @media only screen and (max-width: 450px) {
+    .chart-item {
+      width: 100%;
+    }
+  
+  
+    .textStatusWeb {
+      font-size: 20px;
+    }
+  }
