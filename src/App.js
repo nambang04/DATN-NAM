@@ -500,7 +500,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="textStatus" style={{ color: status === 1 ? 'green' : 'red' }}>
+      <div className="textStatus" style={{ color: status2 === 1 ? 'green' : 'red' }}>
         Trạng thái: {status2 === 1 ? 'Đang hoạt động' : 'Mất kết nối'}
       </div>
 
