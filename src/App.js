@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import logo from "./image/Logo_Hust.png";
+import logo from "./image/logo-hvktmm.png";
 import axios from "axios";
 import { HumidityChart, SmokeChart, TemperatureChart } from "./ChartDetail";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 
 
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, get, set, onValue } from "firebase/database";
 
 import imgOffline from './image/OFFLINE.png'
 import imgOnline from './image/ONLINE.png'
@@ -51,19 +51,19 @@ function App() {
   const [timestamp, settimestamp] = useState(null);
   const [newtimestamp, setnewtimestamp] = useState(null);
 
-  // hop 2 
+  // // hop 2 
 
-  const [humiData2, sethumiData2] = useState(null);
-  const [smokeData2, setsmokeData2] = useState(null);
-  const [tempData2, settempData2] = useState(null);
-
-
-  const [status2, setstatus2] = useState(null);
-  const [timestamp2, settimestamp2] = useState(null);
-  const [newtimestamp2, setnewtimestamp2] = useState(null);
+  // const [humiData2, sethumiData2] = useState(0);
+  // const [smokeData2, setsmokeData2] = useState(0);
+  // const [tempData2, settempData2] = useState(0);
 
 
-  const { logout } = useAuth();
+  // const [status2, setstatus2] = useState(null);
+  // const [timestamp2, settimestamp2] = useState(null);
+  // const [newtimestamp2, setnewtimestamp2] = useState(null);
+
+
+  const { isLoggedIn, logout } = useAuth();
   
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -119,6 +119,17 @@ function App() {
 
 
 
+  useEffect(() => {
+    getValueData();
+    getStatusData();
+  }, []);
+  
+  // useEffect(() => {
+  //   getValueData2();
+  //   getStatusData2();
+  // }, []);
+
+
 const getValueData = async () => {
   try {
     const response = await axios.get(
@@ -136,39 +147,33 @@ const getValueData = async () => {
   }
 };
 
-const getInitialDataFromFirebase = async () => {
-  try {
-    const response = await axios.get(
-      "https://test2-d9c33-default-rtdb.firebaseio.com/Room2/read.json"
-    );
-    const result = response?.data;
+// const getValueData2 = async () => {
+//   try {
+//     const response = await axios.get(
+//       "https://test2-d9c33-default-rtdb.firebaseio.com/Room2/read.json"
+//     );
+//     const result = response?.data;
 
-    sethumiData2(result?.humi);
-    setsmokeData2(result?.smoke);
-    settempData2(result?.temp);
+//     sethumiData2(result?.humi2);
+//     setsmokeData2(result?.smoke2);
+//     settempData2(result?.temp2);
 
-    console.log("Initial data from Firebase", result);
-  } catch (error) {
-    console.log("Error:", error);
-  }
-};
-
-
-useEffect(() => {
-  getInitialDataFromFirebase();
-}, []);
-
+//     console.log("data", result);
+//   } catch (error) {
+//     console.log("Error:", error);
+//   }
+// };
 
 useEffect(() => {
-  getValueData();
-  getStatusData();
-}, []);
+  const fetchData = async () => {
+    setIsLoading(true);
+    await getValueData();
+  //  await getValueData2();
+    setIsLoading(false);
+  };
 
-useEffect(() => {
-  //getValueData2();
-  getStatusData2();
+  fetchData();
 }, []);
-
 
 
   const toggleSos = () => {
@@ -178,7 +183,7 @@ useEffect(() => {
   };
 
 
-
+  // Sử dụng hàm sendControlToFirebase để gửi giá trị tốc độ mới lên Firebase mỗi khi nó thay đổi
   useEffect(() => {
     // Tạo một hàm async để gửi dữ liệu lên Firebase
     const sendControlToFirebase = async () => {
@@ -192,7 +197,7 @@ useEffect(() => {
       try {
         // Gửi dữ liệu lên Firebase bằng set
         await set(rwRef, data);
-        console.log("Đã cập nhật giá trị sosData lên Firebase.");
+        console.log("Đã cập nhật giá trị tốc độ và sosData lên Firebase.");
       } catch (error) {
         console.error("Lỗi khi cập nhật giá trị lên Firebase:", error);
       }
@@ -213,19 +218,18 @@ useEffect(() => {
   listenToFirebaseData("Room1/online/timestamp", settimestamp);
 
 
-  // hop 2 
+  // // hop 2 
 
-  listenToFirebaseData("Room2/read/humi", sethumiData2);
-  listenToFirebaseData("Room2/read/smoke", setsmokeData2);
-  listenToFirebaseData("Room2/read/temp", settempData2);
-  listenToFirebaseData("Room2/online/timestamp2", settimestamp2);
+  // listenToFirebaseData("Room2/read/humi", sethumiData2);
+  // listenToFirebaseData("Room2/read/smoke", setsmokeData2);
+  // listenToFirebaseData("Room2/read/temp", settempData2);
+  // listenToFirebaseData("Room2/online/timestamp2", settimestamp2);
 
 
   listenToFirebaseData("rw/sos", setsosData);
 }, []);
-console.log('humi:', humiData);
 
-console.log('humi2:', humiData2);
+
 // Gửi mail 
 
 
@@ -233,10 +237,9 @@ useEffect(() => {
   const sendMail = async (temperature, humidity, smoke, temperature2, humidity2, smoke2) => {
     try {
       const emailData = {
-        user_name: 'DATN-Nam',
-        user_email: 'bethu06022002@gmail.com',
-        message: `Phòng 1: Nhiệt độ ${temperature}, Độ ẩm ${humidity}, Khói ${smoke}
-                  Phòng 2: Nhiệt độ ${temperature2}, Độ ẩm ${humidity2}, khói ${smoke2}`,
+        user_name: 'HeThongBaoChay',
+        user_email: 'hathunguyenthi06@gmail.com',
+        message: `Phòng 1: Nhiệt độ ${temperature}, Độ ẩm ${humidity}, Khói ${smoke}`,
       };
 
       // Gửi email bằng EmailJS
@@ -260,21 +263,21 @@ useEffect(() => {
     sosData === 1 &&
     tempData !== undefined &&
     humiData !== undefined &&
-    smokeData !== undefined &&
-    tempData2 !== undefined &&
-    humiData2 !== undefined &&
-    smokeData2 !== undefined
+    smokeData !== undefined 
+    // tempData2 !== undefined &&
+    // humiData2 !== undefined &&
+    // smokeData2 !== undefined
   ) {
     sendMail(
       tempData.toString(),
       humiData.toString(),
-      smokeData.toString(),
-      tempData2.toString(),
-      humiData2.toString(),
-      smokeData2.toString()
+      smokeData.toString()
+      // tempData2.toString(),
+      // humiData2.toString(),
+      // smokeData2.toString()
     );
   }
-}, [sosData, tempData, humiData, smokeData, tempData2, humiData2, smokeData2]);
+}, [sosData, tempData, humiData, smokeData ]);
 //...........
 
 
@@ -320,47 +323,47 @@ useEffect(() => {
 
 // hop 2
 
-  const lastTimestamp2 = timestamp2;
+  // const lastTimestamp2 = timestamp2;
 
-  const getStatusData2 = async () => {
-    try {
-      const response = await axios.get(
-        "https://test2-d9c33-default-rtdb.firebaseio.com/Room2/online.json"
-      );
+  // const getStatusData2 = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://test2-d9c33-default-rtdb.firebaseio.com/Room2/online.json"
+  //     );
 
-      const result = response?.data;
-      console.log('result', result);
+  //     const result = response?.data;
+  //     console.log('result', result);
 
-      setnewtimestamp2(result?.timestamp2);
-    } catch (error) {
-      console.log("Error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     setnewtimestamp2(result?.timestamp2);
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  console.log('newtimestamp2:', newtimestamp2);
-  console.log('lastTimestamp2:', lastTimestamp2);
-  console.log('timestamp2:', timestamp2);
+  // console.log('newtimestamp2:', newtimestamp2);
+  // console.log('lastTimestamp2:', lastTimestamp2);
+  // console.log('timestamp2:', timestamp2);
   
-  useEffect(() => {
-    const intervalId = setInterval(getStatusData2, 10000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(getStatusData2, 10000);
   
-    if (lastTimestamp2 !== newtimestamp2) {
-      setstatus2(1);
-    } else {
-      setstatus2(0);
-    }
+  //   if (lastTimestamp2 !== newtimestamp2) {
+  //     setstatus2(1);
+  //   } else {
+  //     setstatus2(0);
+  //   }
   
-    return () => {
-      clearInterval(intervalId);
-    };
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
 
   
 
 
 
-  }, [lastTimestamp2, newtimestamp2]);
+  // }, [lastTimestamp2, newtimestamp2]);
 
 
 
@@ -466,7 +469,7 @@ useEffect(() => {
     <p>Loading...</p>
   ) : (
     <div className="chart">
-      <div className="text-box">Phòng 1</div>
+      <div className="text-box">Thông số phòng</div>
       <HumidityChart humidity={humiData} />
       <SmokeChart smoke={smokeData} />
       <TemperatureChart temperature={tempData} />
@@ -480,7 +483,7 @@ useEffect(() => {
 
 */}
    
-            
+{/*             
    <div className="header-content">
         <div className="row align-items-center">
           <div className="col-sm-1"></div>
@@ -500,7 +503,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="textStatus" style={{ color: status2 === 1 ? 'green' : 'red' }}>
+      <div className="textStatus" style={{ color: status === 1 ? 'green' : 'red' }}>
         Trạng thái: {status2 === 1 ? 'Đang hoạt động' : 'Mất kết nối'}
       </div>
 
@@ -515,13 +518,11 @@ useEffect(() => {
       <HumidityChart humidity={humiData2} />
       <SmokeChart smoke={smokeData2} />
       <TemperatureChart temperature={tempData2} />
-
     </div>
   )}
-</div>
+</div> */}
 </div>
   );
 }
 
 export default App;
-
