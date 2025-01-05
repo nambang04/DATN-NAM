@@ -71,20 +71,21 @@ export default function Login() {
         </div>
       </div>
 
-      <div className="text-center size-lg" style={{ marginTop: "20px" }}>
-        <h4>Trường Cơ Khí-Đại học Bách Khoa Hà Nội</h4>
-        <h5>Nguyễn Phương Nam - 20195111</h5>
+      <div className="text-center size-lg" style={{ marginTop: "40px" }}>
+        <h3>Học Viện Kỹ Thuật Mật Mã </h3>
+        
       </div>
-      <div className="text-center size-sm" style={{ marginTop: "20px" }}>
-        <h4>HUST</h4>
-        <h4>Trường Cơ Khí</h4>
-        <h5>Nguyễn Phương Nam</h5>
+      <div className="text-center size-sm" style={{ marginTop: "60px" }}>
+        <h4>KMA</h4>
+        <h4>Học Viện</h4>
+        <h5>Kỹ Thuật Mật Mã</h5>
+       
       </div>
     </div>
 
     <div
       className="row d-flex justify-content-center align-items-center"
-      style={{ marginTop: "60px" }}
+      style={{ marginTop: "50px" }}
     >
       <div className="col-6 col-sm-5 col-md-5 col-lg-4 col-xl-3">
         <img src={imgLogin} className="img-fluid" alt="Sample image" />
